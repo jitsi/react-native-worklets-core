@@ -70,6 +70,7 @@ task deleteCmakeCache() {
 }
 
 android {
+  namespace "com.worklets"
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
 
   defaultConfig {
@@ -147,6 +148,7 @@ android {
       "**/libhermes.so",
       "**/libhermes-executor-debug.so",
       "**/libhermes_executor.so",
+      "**/libhermestooling.so",
       "**/libreactnative.so",
       "**/libreactnativejni.so",
       "**/libturbomodulejsijni.so",
