@@ -47,6 +47,20 @@ target_include_directories(
 # build shared lib
 set_target_properties(${PACKAGE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
+# Force 16KB page size alignment for Android 15+ compatibility
+if(ANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES)
+  # Set linker flags for 16KB page size alignment
+  set_target_properties(${PACKAGE_NAME} PROPERTIES
+    LINK_FLAGS "-Wl,-z,max-page-size=0x4000"
+  )
+  
+  # Also set compile flags to ensure proper alignment
+  target_compile_options(${PACKAGE_NAME} PRIVATE
+    -fPIC
+    -Wl,-z,max-page-size=0x4000
+  )
+endif()
+
 target_link_libraries(
   ${PACKAGE_NAME}
   log
