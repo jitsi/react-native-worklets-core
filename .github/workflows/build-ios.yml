@@ -26,13 +26,13 @@ jobs:
       run:
         working-directory: example/ios
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Restore node_modules from cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -45,18 +45,18 @@ jobs:
         run: yarn install --frozen-lockfile --cwd ..
 
       - name: Restore buildcache
-        uses: mikehardy/buildcache-action@v1
+        uses: mikehardy/buildcache-action@7f005f176feac6d2ee66ae20259d6c6d1e119961  # v1
         continue-on-error: true
 
       - name: Setup Ruby (bundle)
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@4c56a21280b36d862b5fc31348f463d60bdc55d5  # v1
         with:
           ruby-version: "2.7.6"
           bundler-cache: true
           working-directory: example
 
       - name: Restore Pods cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4
         with:
           path: |
             example/ios/Pods
