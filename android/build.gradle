@@ -149,6 +149,7 @@ android {
       "**/libfolly_runtime.so",
       "**/libglog.so",
       "**/libhermes.so",
+      "**/libhermesvm.so",
       "**/libhermes-executor-debug.so",
       "**/libhermes_executor.so",
       "**/libhermestooling.so",
@@ -174,7 +175,7 @@ android {
 dependencies {
   implementation "com.facebook.react:react-android"
   if (JS_RUNTIME == "hermes") {
-    implementation "com.facebook.react:hermes-android:0.77.2"
+    implementation "com.facebook.hermes:hermes-android:0.16.0"
   }
 }
 
