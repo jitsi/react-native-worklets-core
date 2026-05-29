@@ -16,7 +16,7 @@ import { Worklets } from "../NativeWorklets";
  * ```
  */
 export function useSharedValue<T>(initialValue: T): ISharedValue<T> {
-  const ref = useRef<ISharedValue<T>>();
+  const ref = useRef<ISharedValue<T> | undefined>(undefined);
   if (ref.current == null) {
     ref.current = Worklets.createSharedValue(initialValue);
   }

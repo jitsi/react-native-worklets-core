@@ -3,7 +3,7 @@
 exports[`babel plugin captures worklets environment 1`] = `
 "var x = 5;
 var objX = {
-  x: x
+  x
 };
 var _worklet_3447562087488_init_data = {
   code: "function f(){const{x,objX}=this.__closure;return{res:x+objX.x};}",
@@ -11,13 +11,13 @@ var _worklet_3447562087488_init_data = {
 };
 var f = function () {
   var _e = [new Error(), -3, -20];
-  var _f = function _f() {
+  var _f = function () {
     return {
       res: x + objX.x
     };
   };
   _f.__closure = {
-    x: x,
+    x,
     objX: {
       x: objX.x
     }
@@ -36,7 +36,7 @@ exports[`babel plugin doesn't capture globals 1`] = `
 };
 var f = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f() {
+  var _f = function () {
     console.log('test');
   };
   _f.__closure = {};
@@ -48,7 +48,7 @@ var f = function () {
 `;
 
 exports[`babel plugin doesn't transform standard callback functions 1`] = `
-"var foo = Something.Tap().onEnd(function (_event, _success) {
+"var foo = Something.Tap().onEnd((_event, _success) => {
   console.log('onEnd');
 });"
 `;
@@ -60,7 +60,7 @@ exports[`babel plugin doesn't transform string literals 1`] = `
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f(x) {
+  var _f = function (x) {
     var bar = 'worklet';
     var baz = "worklet";
   };
@@ -75,77 +75,43 @@ var foo = function () {
 exports[`babel plugin supports SequenceExpression 1`] = `
 "function App() {
   (0, fun)({
-    onStart: function onStart() {}
+    onStart() {}
   }, []);
 }"
 `;
 
 exports[`babel plugin supports SequenceExpression, many arguments 1`] = `
-"var _worklet_4434179069699_init_data = {
-  code: "function onStart(){}",
-  location: "${ process.cwd() }/jest tests fixture"
-};
-function App() {
+"function App() {
   (0, 3, fun)({
-    onStart: function () {
-      var _e = [new Error(), 1, -20];
-      var _f = function _f() {};
-      _f.__closure = {};
-      _f.__initData = _worklet_4434179069699_init_data;
-      _f.__workletHash = 4434179069699;
-      _f.__stackDetails = _e;
-      return _f;
-    }()
+    onStart() {
+      'worklet';
+    }
   }, []);
 }"
 `;
 
 exports[`babel plugin supports SequenceExpression, with worklet 1`] = `
-"var _worklet_4434179069699_init_data = {
-  code: "function onStart(){}",
-  location: "${ process.cwd() }/jest tests fixture"
-};
-function App() {
+"function App() {
   (0, fun)({
-    onStart: function () {
-      var _e = [new Error(), 1, -20];
-      var _f = function _f() {};
-      _f.__closure = {};
-      _f.__initData = _worklet_4434179069699_init_data;
-      _f.__workletHash = 4434179069699;
-      _f.__stackDetails = _e;
-      return _f;
-    }()
+    onStart() {
+      'worklet';
+    }
   }, []);
 }"
 `;
 
 exports[`babel plugin supports SequenceExpression, with worklet closure 1`] = `
-"var _worklet_4104704620690_init_data = {
-  code: "function onStart(){const{obj}=this.__closure;var a=obj.a;}",
-  location: "${ process.cwd() }/jest tests fixture"
-};
-function App() {
+"function App() {
   var obj = {
     a: 1,
     b: 2
   };
   (0, fun)({
-    onStart: function () {
-      var _e = [new Error(), -2, -20];
-      var _f = function _f() {
-        var a = obj.a;
-      };
-      _f.__closure = {
-        obj: {
-          a: obj.a
-        }
-      };
-      _f.__initData = _worklet_4104704620690_init_data;
-      _f.__workletHash = 4104704620690;
-      _f.__stackDetails = _e;
-      return _f;
-    }()
+    onStart() {
+      'worklet';
+
+      var a = obj.a;
+    }
   }, []);
 }"
 `;
@@ -155,16 +121,16 @@ exports[`babel plugin supports nested worklets keeping worklet decoration for in
   code: "function anonymous(){return 200;}",
   location: "${ process.cwd() }/jest tests fixture"
 };
-var _worklet_6579109065346_init_data = {
-  code: "function anonymous(){const{_worklet_16463389415794_init_data}=this.__closure;var b=function(){var _e=[new Error(),1,-20];var _f=function _f(){return 200;};_f.__closure={};_f.__initData=_worklet_16463389415794_init_data;_f.__workletHash=16463389415794;_f.__stackDetails=_e;return _f;}();return 100+b();}",
+var _worklet_2627040947483_init_data = {
+  code: "function anonymous(){const{_worklet_16463389415794_init_data}=this.__closure;var b=function(){var _e=[new Error(),1,-20];var _f=function(){return 200;};_f.__closure={};_f.__initData=_worklet_16463389415794_init_data;_f.__workletHash=16463389415794;_f.__stackDetails=_e;return _f;}();return 100+b();}",
   location: "${ process.cwd() }/jest tests fixture"
 };
 var f = function () {
   var _e = [new Error(), -2, -20];
-  var _f = function _f() {
+  var _f = function () {
     var b = function () {
       var _e = [new Error(), 1, -20];
-      var _f = function _f() {
+      var _f = function () {
         return 200;
       };
       _f.__closure = {};
@@ -176,10 +142,10 @@ var f = function () {
     return 100 + b();
   };
   _f.__closure = {
-    _worklet_16463389415794_init_data: _worklet_16463389415794_init_data
+    _worklet_16463389415794_init_data
   };
-  _f.__initData = _worklet_6579109065346_init_data;
-  _f.__workletHash = 6579109065346;
+  _f.__initData = _worklet_2627040947483_init_data;
+  _f.__workletHash = 2627040947483;
   _f.__stackDetails = _e;
   return _f;
 }();"
@@ -193,13 +159,13 @@ var _worklet_210900050506_init_data = {
 };
 var foo = function () {
   var _e = [new Error(), -2, -20];
-  var _f = function _f(t) {
+  var _f = function (t) {
     if (t > 0) {
       return a + foo(t - 1);
     }
   };
   _f.__closure = {
-    a: a
+    a
   };
   _f.__initData = _worklet_210900050506_init_data;
   _f.__workletHash = 210900050506;
@@ -211,11 +177,11 @@ var foo = function () {
 exports[`babel plugin transforms 1`] = `
 "var _reactNativeReanimated = _interopRequireWildcard(require("react-native-reanimated"));
 var _jsxRuntime = require("react/jsx-runtime");
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function Box() {
   var offset = (0, _reactNativeReanimated.useSharedValue)(0);
-  var animatedStyles = (0, _reactNativeReanimated.useAnimatedStyle)(function () {
+  var animatedStyles = (0, _reactNativeReanimated.useAnimatedStyle)(() => {
     return {
       transform: [{
         translateX: offset.value * 255
@@ -226,9 +192,7 @@ function Box() {
     children: [(0, _jsxRuntime.jsx)(_reactNativeReanimated.default.View, {
       style: [styles.box, animatedStyles]
     }), (0, _jsxRuntime.jsx)(Button, {
-      onPress: function onPress() {
-        return offset.value = Math.random();
-      },
+      onPress: () => offset.value = Math.random(),
       title: "Move"
     })]
   });
@@ -236,90 +200,84 @@ function Box() {
 `;
 
 exports[`babel plugin transforms spread operator in worklets for arrays 1`] = `
-"var _worklet_8509370056349_init_data = {
-  code: "function foo(){var bar=[4,5];var baz=[1].concat([2,3],bar);}",
+"var _worklet_9873901588810_init_data = {
+  code: "function foo(){var bar=[4,5];var baz=[1,...[2,3],...bar];}",
   location: "${ process.cwd() }/jest tests fixture"
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f() {
+  var _f = function () {
     var bar = [4, 5];
-    var baz = [1].concat([2, 3], bar);
+    var baz = [1, ...[2, 3], ...bar];
   };
   _f.__closure = {};
-  _f.__initData = _worklet_8509370056349_init_data;
-  _f.__workletHash = 8509370056349;
+  _f.__initData = _worklet_9873901588810_init_data;
+  _f.__workletHash = 9873901588810;
   _f.__stackDetails = _e;
   return _f;
 }();"
 `;
 
 exports[`babel plugin transforms spread operator in worklets for function arguments 1`] = `
-"var _worklet_14198358014380_init_data = {
-  code: "function foo(){for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}console.log(args);}",
+"var _worklet_9866931756941_init_data = {
+  code: "function foo(...args){console.log(args);}",
   location: "${ process.cwd() }/jest tests fixture"
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f() {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+  var _f = function (...args) {
     console.log(args);
   };
   _f.__closure = {};
-  _f.__initData = _worklet_14198358014380_init_data;
-  _f.__workletHash = 14198358014380;
+  _f.__initData = _worklet_9866931756941_init_data;
+  _f.__workletHash = 9866931756941;
   _f.__stackDetails = _e;
   return _f;
 }();"
 `;
 
 exports[`babel plugin transforms spread operator in worklets for function calls 1`] = `
-"var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-var _worklet_17339033565762_init_data = {
-  code: "function foo(arg){const{_toConsumableArray}=this.__closure;var _console;(_console=console).log.apply(_console,_toConsumableArray(arg));}",
+"var _worklet_2015887751437_init_data = {
+  code: "function foo(arg){console.log(...arg);}",
   location: "${ process.cwd() }/jest tests fixture"
 };
 var foo = function () {
-  var _e = [new Error(), -2, -20];
-  var _f = function _f(arg) {
-    var _console;
-    (_console = console).log.apply(_console, (0, _toConsumableArray2.default)(arg));
+  var _e = [new Error(), 1, -20];
+  var _f = function (arg) {
+    console.log(...arg);
   };
-  _f.__closure = {
-    _toConsumableArray: _toConsumableArray2.default
-  };
-  _f.__initData = _worklet_17339033565762_init_data;
-  _f.__workletHash = 17339033565762;
+  _f.__closure = {};
+  _f.__initData = _worklet_2015887751437_init_data;
+  _f.__workletHash = 2015887751437;
   _f.__stackDetails = _e;
   return _f;
 }();"
 `;
 
 exports[`babel plugin transforms spread operator in worklets for objects 1`] = `
-"var _worklet_12506920427210_init_data = {
-  code: "function foo(){var bar={d:4,e:5};var baz=Object.assign({a:1},{b:2,c:3},bar);}",
+"var _worklet_15246532152337_init_data = {
+  code: "function foo(){var bar={d:4,e:5};var baz={a:1,...{b:2,c:3},...bar};}",
   location: "${ process.cwd() }/jest tests fixture"
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f() {
+  var _f = function () {
     var bar = {
       d: 4,
       e: 5
     };
-    var baz = Object.assign({
-      a: 1
-    }, {
-      b: 2,
-      c: 3
-    }, bar);
+    var baz = {
+      a: 1,
+      ...{
+        b: 2,
+        c: 3
+      },
+      ...bar
+    };
   };
   _f.__closure = {};
-  _f.__initData = _worklet_12506920427210_init_data;
-  _f.__workletHash = 12506920427210;
+  _f.__initData = _worklet_15246532152337_init_data;
+  _f.__workletHash = 15246532152337;
   _f.__stackDetails = _e;
   return _f;
 }();"
@@ -332,7 +290,7 @@ exports[`babel plugin workletizes ArrowFunctionExpression 1`] = `
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f(x) {
+  var _f = function (x) {
     return x + 2;
   };
   _f.__closure = {};
@@ -350,7 +308,7 @@ exports[`babel plugin workletizes FunctionDeclaration 1`] = `
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f(x) {
+  var _f = function (x) {
     return x + 2;
   };
   _f.__closure = {};
@@ -365,8 +323,8 @@ exports[`babel plugin workletizes getter 1`] = `
 "var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-var _worklet_13932542455552_init_data = {
-  code: "function get(){const{x}=this.__closure;return x+2;}",
+var _worklet_13643399006149_init_data = {
+  code: "function anonymous(){const{x}=this.__closure;return x+2;}",
   location: "${ process.cwd() }/jest tests fixture"
 };
 var Foo = function () {
@@ -377,14 +335,14 @@ var Foo = function () {
     key: "bar",
     get: function () {
       var _e = [new Error(), -2, -20];
-      var _f = function _f() {
+      var _f = function () {
         return x + 2;
       };
       _f.__closure = {
-        x: x
+        x
       };
-      _f.__initData = _worklet_13932542455552_init_data;
-      _f.__workletHash = 13932542455552;
+      _f.__initData = _worklet_13643399006149_init_data;
+      _f.__workletHash = 13643399006149;
       _f.__stackDetails = _e;
       return _f;
     }()
@@ -408,7 +366,7 @@ var Foo = function () {
     key: "bar",
     value: function () {
       var _e = [new Error(), 1, -20];
-      var _f = function _f(x) {
+      var _f = function (x) {
         return x + 2;
       };
       _f.__closure = {};
@@ -428,7 +386,7 @@ exports[`babel plugin workletizes named FunctionExpression 1`] = `
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f(x) {
+  var _f = function (x) {
     return x + 2;
   };
   _f.__closure = {};
@@ -455,7 +413,7 @@ var Foo = function () {
     key: "bar",
     value: function () {
       var _e = [new Error(), 1, -20];
-      var _f = function _f(x) {
+      var _f = function (x) {
         return x + 2;
       };
       _f.__closure = {};
@@ -475,7 +433,7 @@ exports[`babel plugin workletizes unnamed FunctionExpression 1`] = `
 };
 var foo = function () {
   var _e = [new Error(), 1, -20];
-  var _f = function _f(x) {
+  var _f = function (x) {
     return x + 2;
   };
   _f.__closure = {};
