@@ -287,7 +287,9 @@ private:
   std::thread::id _jsThreadId;
 
   static std::shared_ptr<JsiWorkletContext> defaultInstance;
-  static std::map<void *, JsiWorkletContext *> runtimeMappings;
+  // Leaked reference: never destroyed, so ~JsiWorkletContext can safely erase
+  // during static teardown at app exit.
+  static std::map<void *, JsiWorkletContext *> &runtimeMappings;
   static size_t contextIdNumber;
 };
 
