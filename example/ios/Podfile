@@ -36,5 +36,25 @@ target 'WorkletsExample' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # RN 0.85's prebuilt ReactNativeDependencies pod ships folly headers without
+    # folly/coro, but clang enables C++20 coroutines, so Expected.h tries to
+    # include the missing folly/coro/Coroutine.h. Disable folly coroutines.
+    def add_no_coroutines(config)
+      defs = config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+      defs = defs.split(' ') if defs.is_a?(String)
+      defs << 'FOLLY_CFG_NO_COROUTINES=1' unless defs.include?('FOLLY_CFG_NO_COROUTINES=1')
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = defs
+    end
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each { |config| add_no_coroutines(config) }
+    end
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.user_project.native_targets.each do |target|
+        target.build_configurations.each { |config| add_no_coroutines(config) }
+      end
+      aggregate_target.user_project.save
+    end
   end
 end

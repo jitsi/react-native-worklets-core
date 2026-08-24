@@ -34,7 +34,8 @@ const char *WorkletRuntimeFlag = "__rn_worklets_runtime_flag";
 const char *GlobalPropertyName = "global";
 
 std::shared_ptr<JsiWorkletContext> JsiWorkletContext::defaultInstance;
-std::map<void *, JsiWorkletContext *> JsiWorkletContext::runtimeMappings;
+std::map<void *, JsiWorkletContext *> &JsiWorkletContext::runtimeMappings =
+    *new std::map<void *, JsiWorkletContext *>();
 size_t JsiWorkletContext::contextIdNumber = 1000;
 
 namespace jsi = facebook::jsi;
