@@ -36,6 +36,7 @@ const char *GlobalPropertyName = "global";
 std::shared_ptr<JsiWorkletContext> JsiWorkletContext::defaultInstance;
 std::map<void *, JsiWorkletContext *> &JsiWorkletContext::runtimeMappings =
     *new std::map<void *, JsiWorkletContext *>();
+std::mutex &JsiWorkletContext::runtimeMappingsMutex = *new std::mutex();
 size_t JsiWorkletContext::contextIdNumber = 1000;
 
 namespace jsi = facebook::jsi;
@@ -65,7 +66,9 @@ JsiWorkletContext::JsiWorkletContext(
 
 JsiWorkletContext::~JsiWorkletContext() {
   // Remove from thread contexts
-  runtimeMappings.erase(&_workletRuntime);
+  // Key must match initialize(): the runtime's address, not the unique_ptr's.
+  std::lock_guard<std::mutex> lock(runtimeMappingsMutex);
+  runtimeMappings.erase(_workletRuntime.get());
 }
 
 void JsiWorkletContext::initialize(
@@ -80,7 +83,12 @@ void JsiWorkletContext::initialize(
   _contextId = ++contextIdNumber;
 
   _jsThreadId = std::this_thread::get_id();
-  runtimeMappings.emplace(&getWorkletRuntime(), this);
+  // Create the runtime outside the lock (lazy init runs JSI setup).
+  auto workletRuntime = &getWorkletRuntime();
+  {
+    std::lock_guard<std::mutex> lock(runtimeMappingsMutex);
+    runtimeMappings.emplace(workletRuntime, this);
+  }
 
   // Add default decorators
   addDecorator(std::make_shared<JsiSetImmediateDecorator>());

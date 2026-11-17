@@ -10,6 +10,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -116,10 +117,9 @@ public:
    */
   static JsiWorkletContext *getCurrent(jsi::Runtime &runtime) {
     auto rtPtr = static_cast<void *>(&runtime);
-    if (runtimeMappings.count(rtPtr) != 0) {
-      return runtimeMappings.at(rtPtr);
-    }
-    return nullptr;
+    std::lock_guard<std::mutex> lock(runtimeMappingsMutex);
+    auto it = runtimeMappings.find(rtPtr);
+    return it != runtimeMappings.end() ? it->second : nullptr;
   }
 
   size_t getContextId() { return _contextId; }
@@ -290,6 +290,8 @@ private:
   // Leaked reference: never destroyed, so ~JsiWorkletContext can safely erase
   // during static teardown at app exit.
   static std::map<void *, JsiWorkletContext *> &runtimeMappings;
+  // Leaked like runtimeMappings; contexts are created/destroyed on several threads.
+  static std::mutex &runtimeMappingsMutex;
   static size_t contextIdNumber;
 };
 
